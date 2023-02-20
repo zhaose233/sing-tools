@@ -1,0 +1,119 @@
+{
+    "dns": {
+	"servers": [
+	    {
+		"tag": "cloudflare",
+		"address": "https://1.1.1.1/dns-query"
+	    },
+	    {
+		"tag": "local",
+		"address": "8.8.8.8",
+		"detour": "direct"
+	    },
+	    {
+		"tag": "block",
+		"address": "rcode://success"
+	    }
+	],
+	"rules": [
+	    {
+		"geosite": "category-ads-all",
+		"server": "block",
+		"disable_cache": true
+	    },
+	    {
+		"geosite": "cn",
+		"server": "local"
+	    }
+	],
+	"strategy": "ipv4_only"
+    },
+    "inbounds": [
+	{
+	    "type": "tun",
+	    "interface_name": "sing-tun",
+	    "inet4_address": "172.19.0.1/30",
+	    "mtu": 9000,
+	    "stack": "gvisor",
+	    "auto_route": true,
+	    "strict_route": false,
+	    "sniff": true
+	},
+	{
+	    "type": "socks",
+	    "tag": "socks-in",
+	    "listen": "127.0.0.1",
+	    "listen_port": 20170,
+	    "tcp_fast_open": false,
+	    "udp_fragment": false,
+	    "sniff": true
+	},
+	{
+	    "type": "http",
+	    "tag": "http-in",
+	    "listen": "127.0.0.1",
+	    "listen_port": 20172,
+	    "tcp_fast_open": false,
+	    "udp_fragment": false,
+	    "sniff": true,
+
+	    "tls": {},
+	    "set_system_proxy": false
+	}
+    ],
+    "outbounds": [
+	{
+	    "info":"WillBeReplaced"
+	},
+	{
+	    "type": "direct",
+	    "tag": "direct"
+	},
+	{
+	    "type": "block",
+	    "tag": "block"
+	},
+	{
+	    "type": "dns",
+	    "tag": "dns-out"
+	}
+    ],
+    "route": {
+	"geoip": {
+	    "path": "/usr/share/sing-geoip/geoip.db"
+	},
+	"geosite": {
+	    "path": "/usr/share/sing-geosite/geosite.db"
+	},
+	"rules": [
+	    {
+		"protocol": "dns",
+		"outbound": "dns-out"
+	    },
+	    {
+		"geosite": "cn",
+		"geoip": [
+		    "private",
+		    "cn"
+		],
+		"outbound": "direct"
+	    },
+	    {
+		"geosite": "category-ads-all",
+		"outbound": "block"
+	    },
+	    {
+                "process_name": [
+                    "nekoray_core",
+                    "nekoray_core.exe",
+                    "nekobox_core",
+                    "nekobox_core.exe",
+		    "openconnect",
+		    "zerotier-one"
+                ],
+                "outbound": "direct"
+            }
+	],
+	"auto_detect_interface": true
+    }
+}
