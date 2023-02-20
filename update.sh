@@ -12,6 +12,8 @@ function update_all {
 
 function help {
     echo "zhaose's sing-box tools"
+    echo "all       更新所有訂閱"
+    echo "<NAME>    以訂閱名字進行更新"
 }
 
 function update {
