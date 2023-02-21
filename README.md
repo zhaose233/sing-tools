@@ -2,7 +2,7 @@
 
 - `update.sh` 用來更新訂閱並生成 `sing-box` 的出站配置，請把訂閱信息填到 `conf/subs.json`
 - `test.sh` 使用訂閱名稱作為參數，測試訂閱中節點的 URL 延時，並保存在訂閱目錄下的`tested.txt`裡
-- `chsing.sh｀ 從標準輸入讀取一個 sing-box 配置，將其出站與 `/etc/sing-box/config_base.json` 放入 `/etc/sing-box/config.json`，只起到切換出站的作用，改動配置則請改動模版文件
+- `chsing.sh` 從標準輸入讀取一個 sing-box 配置，將其出站與 `/etc/sing-box/config_base.json` 放入 `/etc/sing-box/config.json`，只起到切換出站的作用，改動配置則請改動模版文件
 
 ## 示例
 ```shell
